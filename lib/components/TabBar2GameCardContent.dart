@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:steam_reborn/Colors/colors.dart';
 import 'package:steam_reborn/class/GameCardData.dart';
 import 'package:steam_reborn/class/ReviewGameData.dart';
+import 'package:steam_reborn/theme/theme_provider.dart';
 
 class TabBar2GameCardContent extends StatelessWidget {
   String accountName;
@@ -20,6 +22,16 @@ class TabBar2GameCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    checkTheme() {
+      if (themeProvider.isDarkMode) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return Container(
       child: Column(
         children: [
@@ -27,7 +39,9 @@ class TabBar2GameCardContent extends StatelessWidget {
             margin: EdgeInsets.only(top: 20, bottom: 20),
             child: Text(
               gameCardData.gameName,
-              style: TextStyle(fontSize: 24, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 24,
+                  color: checkTheme() ? Colors.white : Colors.black87),
             ),
           ),
           Container(
@@ -42,9 +56,11 @@ class TabBar2GameCardContent extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(bottom: 40),
-            child: const Text(
+            child: Text(
               "Review",
-              style: TextStyle(fontSize: 24, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 24,
+                  color: checkTheme() ? Colors.white : Colors.black87),
             ),
           ),
           Container(
@@ -61,7 +77,7 @@ class TabBar2GameCardContent extends StatelessWidget {
                           decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: buttonColor, //New
+                                color: buttonColorDarkTheme, //New
                                 blurRadius: 5,
                               )
                             ],
@@ -82,7 +98,10 @@ class TabBar2GameCardContent extends StatelessWidget {
                                 child: Text(
                                   reviewGameData[index].accountName,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
+                                      color: checkTheme()
+                                          ? Colors.white
+                                          : Colors.black87,
+                                      fontSize: 16),
                                 ),
                               ),
                               Container(
@@ -90,7 +109,10 @@ class TabBar2GameCardContent extends StatelessWidget {
                                 child: Text(
                                   reviewGameData[index].comment,
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
+                                      color: checkTheme()
+                                          ? Colors.grey
+                                          : Colors.black54,
+                                      fontSize: 12),
                                 ),
                               ),
                             ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:steam_reborn/Colors/colors.dart';
 import 'package:steam_reborn/class/GameCardData.dart';
 import 'package:steam_reborn/class/ReviewGameData.dart';
+import 'package:steam_reborn/theme/theme_provider.dart';
 
 class TabBar1GameCardContent extends StatelessWidget {
   String accountName;
@@ -31,6 +33,16 @@ class TabBar1GameCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    checkTheme() {
+      if (themeProvider.isDarkMode) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return Scaffold(
         body: Container(
       child: Column(
@@ -39,9 +51,9 @@ class TabBar1GameCardContent extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 20),
             child: Text(
               gameCardData.gameName,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
-                color: Colors.white,
+                color: checkTheme() ? Colors.white : Colors.black87,
               ),
             ),
           ),
@@ -61,14 +73,16 @@ class TabBar1GameCardContent extends StatelessWidget {
             child: Text(
               gameCardData.gameDescription,
               textAlign: TextAlign.justify,
-              style: TextStyle(fontSize: 18, color: fontColor),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           Container(
             margin: const EdgeInsets.only(bottom: 20),
-            child: const Text(
+            child: Text(
               "Comment",
-              style: TextStyle(fontSize: 24, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 24,
+                  color: checkTheme() ? Colors.white : Colors.black87),
             ),
           ),
           Container(
@@ -83,14 +97,21 @@ class TabBar1GameCardContent extends StatelessWidget {
                     padding: EdgeInsets.only(left: 20),
                     child: TextFormField(
                       controller: reviewController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           filled: true,
-                          fillColor: secondaryColor,
-                          border: OutlineInputBorder(),
+                          fillColor: checkTheme()
+                              ? secondaryColorDarkTheme
+                              : Colors.black87,
+                          border: const OutlineInputBorder(),
                           labelText: 'Comment',
                           hintText: 'Enter Comment',
-                          labelStyle: TextStyle(color: fontColor)),
-                      style: const TextStyle(color: fontColor),
+                          labelStyle: TextStyle(
+                              color: checkTheme()
+                                  ? fontColorDarkTheme
+                                  : Colors.white)),
+                      style: TextStyle(
+                          color:
+                              checkTheme() ? fontColorDarkTheme : Colors.white),
                     ),
                   ),
                 ),
@@ -99,12 +120,16 @@ class TabBar1GameCardContent extends StatelessWidget {
                   child: InkWell(
                     child: Icon(
                       Icons.arrow_circle_right_outlined,
-                      color: buttonColor,
+                      color:
+                          checkTheme() ? buttonColorDarkTheme : Colors.black87,
                       size: 50,
                     ),
                     onTap: () {
                       if (reviewController.text.isEmpty == false) {
-                        reviewGameData.add(new ReviewGameData(urlImage: 'Dummy_Avatar.jpg', accountName: accountName, comment: reviewController.text));
+                        reviewGameData.add(new ReviewGameData(
+                            urlImage: 'Dummy_Avatar.jpg',
+                            accountName: accountName,
+                            comment: reviewController.text));
                         reviewController.clear();
                         ScaffoldMessenger.of(context)
                             .showSnackBar(snackBarSuccess);

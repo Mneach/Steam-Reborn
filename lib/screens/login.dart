@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:steam_reborn/Colors/colors.dart';
 import 'package:steam_reborn/screens/home.dart';
+import 'package:steam_reborn/theme/theme_provider.dart';
 import 'package:steam_reborn/utilities/Validation/validation.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,6 +25,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    checkTheme() {
+      if (themeProvider.isDarkMode) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return Scaffold(
         body: Form(
       autovalidateMode: AutovalidateMode.always,
@@ -31,19 +43,24 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            logoUrl,
-            width: 100,
-            height: 100,
-          ),
-          const Text(
+          Container(
+              height: 120,
+              width: 120,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: 1,
+                    color: checkTheme() ? Colors.transparent : Colors.black87),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Image.asset(logoUrl)),
+          Text(
             'STEAM REBORN',
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 30,
                 fontFamily: 'SFPRO',
                 fontWeight: FontWeight.bold,
-                color: Colors.white),
+                color: checkTheme() ? Colors.white : Colors.black87),
           ),
           Container(
               margin: const EdgeInsets.only(top: 40.0),
@@ -51,16 +68,19 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: TextFormField(
                   controller: accountNameController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       filled: true,
-                      fillColor: secondaryColor,
+                      fillColor:
+                          checkTheme() ? secondaryColorDarkTheme : Colors.white,
                       border: OutlineInputBorder(),
                       labelText: 'Account Name',
                       hintText: 'Enter Account Name',
-                      labelStyle: TextStyle(color: fontColor)),
+                      labelStyle: TextStyle(
+                          color: checkTheme()
+                              ? fontColorDarkTheme
+                              : Colors.black87)),
                   validator: (value) {
-                    if (value != null &&
-                        checkUpperCaseLetter(value) == false) {
+                    if (value != null && checkUpperCaseLetter(value) == false) {
                       return "Account name must contain at least one uppercase letter";
                     } else if (value != null &&
                         checkLength(6, value.length) == false) {
@@ -69,7 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     }
                   },
-                  style: const TextStyle(color: fontColor),
+                  style: TextStyle(
+                      color:
+                          checkTheme() ? fontColorDarkTheme : Colors.black87),
                 ),
               )),
           Container(
@@ -79,13 +101,17 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextFormField(
                   obscureText: true,
                   controller: passwordController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       filled: true,
-                      fillColor: secondaryColor,
+                      fillColor:
+                          checkTheme() ? secondaryColorDarkTheme : Colors.white,
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                       hintText: 'Enter Password',
-                      labelStyle: TextStyle(color: fontColor)),
+                      labelStyle: TextStyle(
+                          color: checkTheme()
+                              ? fontColorDarkTheme
+                              : Colors.black87)),
                   validator: (value) {
                     if (value != null &&
                         checkLength(6, value.length) == false) {
@@ -97,7 +123,9 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     }
                   },
-                  style: const TextStyle(color: fontColor),
+                  style: TextStyle(
+                      color:
+                          checkTheme() ? fontColorDarkTheme : Colors.black87),
                 ),
               )),
           Container(
@@ -106,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
+                    backgroundColor: buttonColorDarkTheme,
                     minimumSize: const Size.fromHeight(50), // NEW
                   ),
                   onPressed: () {
@@ -122,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                         return HomePage(
                             accountName: accountNameController.text);
                       })), (route) => false);
-                    } 
+                    }
                   },
                   child: const Text(
                     'Submit',

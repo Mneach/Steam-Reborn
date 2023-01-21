@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:steam_reborn/Colors/Colors.dart';
+import 'package:provider/provider.dart';
+import 'package:steam_reborn/Colors/colors.dart';
+import 'package:steam_reborn/theme/theme_provider.dart';
 
 class NavbarHeader extends StatelessWidget {
   final dummyAvatarUrl = 'Dummy_Avatar.jpg';
@@ -18,6 +20,16 @@ class NavbarHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    checkTheme() {
+      if (themeProvider.isDarkMode) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return Container(
         padding: padding.add(EdgeInsets.only(top: 15)),
         child: Column(
@@ -29,7 +41,7 @@ class NavbarHeader extends StatelessWidget {
                 decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: buttonColor, //New
+                      color: buttonColorDarkTheme, //New
                       blurRadius: 5,
                     )
                   ],
@@ -51,17 +63,24 @@ class NavbarHeader extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Image.asset('indonesia-flag.png' , width: 20 , height: 20),
+                      Image.asset('indonesia-flag.png', width: 20, height: 20),
                       const SizedBox(width: 5),
-                      const Text(
+                      Text(
                         "Indonesia",
-                        style: TextStyle(fontSize: 12, color: buttonColor),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: checkTheme()
+                                ? buttonColorDarkTheme
+                                : Colors.white),
                       ),
                     ],
                   ),
-                  const Text(
+                  Text(
                     "No Information Given",
-                    style: TextStyle(fontSize: 12, color: fontColor),
+                    style: TextStyle(
+                        fontSize: 12,
+                        color:
+                            checkTheme() ? fontColorDarkTheme : Colors.white),
                   )
                 ],
               )
@@ -69,9 +88,9 @@ class NavbarHeader extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                Text(
+                const Text(
                   "LEVEL 999",
-                  style: TextStyle(fontSize: 16 , color: Colors.white70),
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
                 )
               ],
             )
