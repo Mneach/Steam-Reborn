@@ -17,8 +17,8 @@ class SteamReborn extends StatelessWidget {
           return MaterialApp(
             title: "Steam Reborn",
             themeMode: themeProvider.themeMode,
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
+            theme: Themes.lightTheme,
+            darkTheme: Themes.darkTheme,
             home: const LoginPage(),
           );
         },

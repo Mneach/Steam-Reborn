@@ -7,12 +7,16 @@ class ThemeProvider extends ChangeNotifier {
   bool get isDarkMode => themeMode == ThemeMode.dark;
 
   void toogleTheme(bool isOn) {
-    themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+    if (isOn) {
+      themeMode = ThemeMode.dark;
+    } else {
+      themeMode = ThemeMode.light;
+    }
     notifyListeners();
   }
 }
 
-class MyThemes {
+class Themes {
   static final darkTheme = ThemeData(
       scaffoldBackgroundColor: primaryColorDarkTheme,
       primaryColor: primaryColorDarkTheme,
